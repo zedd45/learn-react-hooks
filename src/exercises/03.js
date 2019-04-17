@@ -34,6 +34,7 @@ http://ws.kcd.im/?ws=learn%20react%20hooks&e=03&em=
 
 1. using a function as the initialState for React.useState will allow it to only run once (sort of like componentDidMount back in the day...)
 2. you can supply an array of dependencies to useEffect as it's second argument, and it will only call the effect if those values are updated
+3. Try to abstract the local / sessionStorage to a more generic function (later)
 
 */
 
