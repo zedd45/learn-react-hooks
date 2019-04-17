@@ -1,5 +1,5 @@
 // Interact with the DOM with useEffect
-import React, {useEffect, useRef, useDebugValue} from 'react'
+import React, {useEffect, useRef} from 'react'
 import VanillaTilt from 'vanilla-tilt'
 
 function Tilt({children}) {
@@ -15,19 +15,15 @@ function Tilt({children}) {
       'max-glare': 0.5,
     })
 
+    // return a cleanup function to useEffect, and it will run this when the component "unmounts" essentially
+    // since this node never changes with input, we can tell React to only run this "onmount" by supplying an empty dependencies array
+    // if we start involving state, we can simply update this to the state variable
     return function cleanup () {
       tiltNode.vanillaTilt.destroy()
     }
   }, [])
 
-  // 💰 Don't forget to return a cleanup function. VanillaTilt.init will add an
-  // object to your DOM node to cleanup: `tiltNode.vanillaTilt.destroy()`
-  //
-  // 💰 Don't forget to specify your effect's dependencies array! In our case
-  // we know that the tilt node will never change, so make it `[]`. Ask me about
-  // this for a more in depth explanation.
 
-  // 🐨 add the `ref` prop to the `tilt-root` div here:
   return (
     <div className="tilt-root" ref={tiltRef}>
       <div className="tilt-child">{children}</div>
@@ -40,6 +36,8 @@ function Tilt({children}) {
 /*
 🦉 Elaboration & Feedback
 After the instruction, copy the URL below into your browser and fill out the form:
+
+1. You can actually simulate `componentDidUnmount` with an empty `useEffect` that returns the function you want to run, and supply an empty array, so it only runs on unmount, vs every render cycle
 
 http://ws.kcd.im/?ws=learn%20react%20hooks&e=05&em=
 */
