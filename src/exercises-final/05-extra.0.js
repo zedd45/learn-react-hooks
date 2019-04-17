@@ -13,6 +13,8 @@ function useTilt(ref, options) {
 
 function Tilt({children}) {
   const tiltRef = React.useRef()
+
+  // this is utilizing the fact that React.setState will only update when it's called, and it's not called again here, so we just use the initial state
   useTilt(
     tiltRef,
     React.useState(() => ({
