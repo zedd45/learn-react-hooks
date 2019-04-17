@@ -19,6 +19,8 @@ const O = 'O'
 // xIsNext - Whether the "X" player is next. This will allow you to know who it
 // was that clicked on a square and allow you to display who the next player is.
 
+// TODO: exctact out the Square component, iterate over the rows & extract the hook logic
+
 function Board() {
   // 🐨 Use React.useState for both the elements of state you need
 
