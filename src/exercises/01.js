@@ -13,7 +13,9 @@ function Counter({step = 1, initalCount = 2}) {
   //    your increment function as the onClick handler.
 
   const [count, setCount] = useState(initalCount);
-  const increment = () => setCount(count + step)
+  const increment = () => setCount(currentCount => {
+    return currentCount + step;
+  });
 
   return <button onClick={increment}>{count}</button>;
 }
