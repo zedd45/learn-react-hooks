@@ -4,9 +4,6 @@ import React, {useState} from 'react'
 const X = 'X'
 const O = 'O'
 
-// If you'd rather practice refactoring a class component to a function
-// component with hooks, then go ahead and do 04.classes.js instead.
-
 // We're going to build tic-tac-toe! If you've gone through React's official
 // tutorial, this was lifted from that (except that example still uses classes).
 //
@@ -24,7 +21,6 @@ const O = 'O'
 
 function Board() {
   // 🐨 Use React.useState for both the elements of state you need
-  // 💰 To create an empty array with 9 slots, you can use: `Array(9).fill(null)`
 
   const [squares, placeMarker] = useState(Array(9).fill(null))
   const [xIsNext, setXIsNext] = useState(true)
@@ -46,21 +42,9 @@ function Board() {
     const newSquares = [...squares]
     newSquares[square] = xIsNext ? X : O
 
-    // 🐨 toggle the xIsNext state
-    // 🐨 set the squares to your copy
-
     setXIsNext(!xIsNext)
     placeMarker(newSquares)
   }
-
-  // let's calculate the status we'll display at the top of the board.
-  // 🐨 determine whether there's a winner (💰 `calculateWinner(squares)`).
-  //
-  // We can have the following statuses:
-  // `Winner: ${winner}`
-  // `Scratch: Cat's game` (💰 if every square in squares is truthy and there's no winner, then it's a scratch)
-  // `Next player: ${xIsNext ? 'X' : 'O'}`
-  //
 
   let statusFragment;
   if (winner) {
