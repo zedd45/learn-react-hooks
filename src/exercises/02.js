@@ -1,5 +1,5 @@
 // Counter: custom hooks
-import React from 'react'
+import React, {useState} from 'react'
 
 // In this exercise, you'll be refactoring our Counter component to use a custom
 // hook that we could use anywhere in our codebase.
@@ -9,9 +9,14 @@ import React from 'react'
 //
 // 🐨 Use your custom useCounter hook in the Counter.
 
+function useCounter ({step = 1, initialCount = 0}) {
+  const [count, setCount] = useState(initialCount);
+  const increment = () => setCount(currentCount => currentCount + step);
+  return [count, increment];
+}
+
 function Counter({step = 1, initialCount = 0}) {
-  const [count, setCount] = React.useState(initialCount)
-  const increment = () => setCount(c => c + step)
+  const [count, increment] = useCounter({step, initialCount});
   return <button onClick={increment}>{count}</button>
 }
 
