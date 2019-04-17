@@ -1,5 +1,8 @@
 // Tic Tac Toe: Advanced State
-import React from 'react'
+import React, {useState} from 'react'
+
+const X = 'X'
+const O = 'O'
 
 // If you'd rather practice refactoring a class component to a function
 // component with hooks, then go ahead and do 04.classes.js instead.
@@ -23,24 +26,31 @@ function Board() {
   // 🐨 Use React.useState for both the elements of state you need
   // 💰 To create an empty array with 9 slots, you can use: `Array(9).fill(null)`
 
+  const [squares, placeMarker] = useState(Array(9).fill(null))
+  const [xIsNext, setXIsNext] = useState(true)
+  const winner = calculateWinner(squares);
+
   // This is the function your square click handler will call. `square` should
   // be an index. So if they click the center square, this will be `5`.
-  // eslint-disable-next-line no-unused-vars
+
   function selectSquare(square) {
+
     // 🐨 first determine if there's already a winner, return early if there is.
     // 💰 there's a `calculateWinner` function already written for you at the
     //    bottom of this file. Fee free to use `calculateWinner(squares)`.
-    //
-    // 🐨 If there's already a value at the square index, then return early.
-    // 💰 you can combine this check with the previous using `||`.
-    //
-    // 🦉 It's typically a bad idea to manipulate state in React
-    // 🐨 make a copy of the squares array (💰 `[...squares]` will do it!)
-    // 🐨 Set the value of the square that was selected
-    // 💰 `squaresCopy[square] = xIsNext ? 'X' : 'O'`
-    //
+
+    if (winner !== null || squares[square] !== null) {
+      return
+    }
+
+    const newSquares = [...squares]
+    newSquares[square] = xIsNext ? X : O
+
     // 🐨 toggle the xIsNext state
     // 🐨 set the squares to your copy
+
+    setXIsNext(!xIsNext)
+    placeMarker(newSquares)
   }
 
   // let's calculate the status we'll display at the top of the board.
@@ -51,24 +61,45 @@ function Board() {
   // `Scratch: Cat's game` (💰 if every square in squares is truthy and there's no winner, then it's a scratch)
   // `Next player: ${xIsNext ? 'X' : 'O'}`
   //
-  // 🐨 assign a `status` variable to one of these, and render it above the
-  //    board in a div with the className "status"
-  //
-  // 🐨 return your JSX with this basic structure:
-  // return (
-  //   <div>
-  //     <div className="status">{/* put the status here */}</div>
-  //     {/* you'll need 3 board-rows and each will have 3 squares */}
-  //     <div className="board-row">
-  //       <button className="square" onClick={() => selectSquare(0)}>
-  //         {squares[0]}
-  //       </button>
-  //       {/* etc... */}
-  //     </div>
-  //     {/* etc... */}
-  //   </div>
-  // )
-  return 'todo'
+
+  let statusFragment;
+  if (winner) {
+    statusFragment = `Winner is ${winner}`
+  } else if (!winner && squares.every(square => !!square)) {
+    statusFragment = "Scratch: Cat's game"
+  } else {
+    statusFragment = `Next Player: ${xIsNext ? X : O}`
+  }
+
+  const Square = ({index}) => (
+    <button className="square" onClick={() => selectSquare(index)}>
+      {squares[index]}
+    </button>
+  )
+
+  return (
+    <div>
+      <div className="status">{statusFragment}</div>
+
+      <div className="board-row">
+        <Square index={0} />
+        <Square index={1} />
+        <Square index={2} />
+      </div>
+
+      <div className="board-row">
+        <Square index={3} />
+        <Square index={4} />
+        <Square index={5} />
+      </div>
+
+      <div className="board-row">
+        <Square index={6} />
+        <Square index={7} />
+        <Square index={8} />
+      </div>
+    </div>
+  )
 }
 
 // 💯 See if you can figure out a nice way to avoid all the repetition in the square buttons
@@ -102,7 +133,6 @@ http://ws.kcd.im/?ws=learn%20react%20hooks&e=04&em=
 //                                                                //
 ////////////////////////////////////////////////////////////////////
 
-// eslint-disable-next-line no-unused-vars
 function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
