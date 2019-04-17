@@ -6,7 +6,7 @@ import React, {useState} from 'react'
 // number of times the button has been clicked.
 
 function Counter({step = 1, initalCount = 2}) {
-  // 🐨 use React.useState here
+
   // 🐨 create an increment function that calls the state updater you get from
   //    React.useState to increment the count
   // 🐨 render the count you get from React.useState inside the button and use
@@ -20,30 +20,18 @@ function Counter({step = 1, initalCount = 2}) {
   return <button onClick={increment}>{count}</button>;
 }
 
-// 💯 make the counter accept props called "step" and "initialCount" and make
-// the counter increment by the given step and start at the given count
-
-// 💯 You'll need to know the current count to increment it by one. Normally
-// it's fine to just reference the `count` variable you have available in your
-// closure, but it can be problematic in some situations (async especially).
-// State updater functions (like `setName` above) can accept a function which
-// will be passed the current state and returns what you want the state to be
-// set to:
-//
-// setCount(currentCount => {
-//   // calculate newCount variable
-//   return newCount
-// })
-//
-// You can make things work without doing it this way, but as a bonus try to
-// figure out how to make that work as well. We'll cover more about why this
-// is important when we talk about asynchronously updating the state.
-
 /*
 🦉 Elaboration & Feedback
 After the instruction, copy the URL below into your browser and fill out the form:
 
 http://ws.kcd.im/?ws=learn%20react%20hooks&e=01&em=
+
+1. setting initial state happens in the `useState` function
+   From the React Docs:
+   > What do we pass to useState as an argument? The only argument to the useState() Hook is the initial state. Unlike with classes, the state doesn’t have to be an object. We can keep a number or a string if that’s all we need. In our example, we just want a number for how many times the user clicked, so pass 0 as initial state for our variable. (If we wanted to store two different values in state, we would call useState() twice.)
+2. there is a function handler / callback for useState's second parameter, the "updater"
+   >
+
 */
 
 ////////////////////////////////////////////////////////////////////
