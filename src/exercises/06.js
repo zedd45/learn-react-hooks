@@ -1,14 +1,10 @@
 // Making HTTP requests with useEffect
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 
-// In this exercise, we'll be doing data fetching directly in a useEffect hook
-// callback within our component.
-//
-// Here we have a form where users can enter the name of a pokemon and fetch
-// data about that pokemon. Your job will be to create a component which makes
-// that fetch request.
-
-function PokemonInfo({pokemonName}) {
+/**
+ * @return {string}
+ */
+function PokemonInfo({pokemonName = null }) {
   // 🐨 Have state for the pokemon (null), the error state (null), and the
   // loading state (false).
   // 🐨 Use the `fetchPokemon` function below to fetch a pokemon by its name:
@@ -17,6 +13,10 @@ function PokemonInfo({pokemonName}) {
   //     error => {/* update all the state here */},
   //   )
 
+  const [pokemon, setPokemonData] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [hasError, setHasError] = useState(false)
+
   // 🐨 use React.useEffect where the callback should be called whenever the
   // pokemon name changes.
   // 💰 DON'T FORGET THE DEPENDENCIES ARRAY!
@@ -24,11 +24,33 @@ function PokemonInfo({pokemonName}) {
   // 🐨 when the promise resolves, update the loading and pokemon state
   // 🐨 if the promise rejects, update the loading and error state
 
-  // 🐨 Render the appropriate content based on the state:
-  //    1. loading: '...'
-  //    2. error: 'ERROR!'
-  //    3. pokemon: the JSON.stringified pokemon in a <pre></pre>
-  return 'todo'
+  useEffect(() => {
+    setIsLoading(true)
+    setHasError(false)
+
+    fetchPokemon(pokemonName)
+      .then(data => {
+        setIsLoading(false)
+        setPokemonData(data)
+      })
+      .catch(error => {
+        setIsLoading(false)
+        setHasError(true)
+        console && console.error(error)
+      })
+  }, [pokemonName])
+
+  if (isLoading) {
+    return '...'
+  } else if (hasError) {
+    return 'oh no! an error has occurred!'
+  }
+
+  return (
+    <pre>
+      {JSON.stringify(pokemon || 'Unknown', null, 2)}
+    </pre>
+  )
 }
 
 // 💯 With the way that PokemonInfo is written, it's only rendered when there's
@@ -101,16 +123,22 @@ class Usage extends React.Component {
     const {pokemonName} = this.state
     return (
       <div>
+
+        <p>For a list of possibilities, see this API guide:
+          <a href="https://pokeapi.co/" target="_blank">https://pokeapi.co/</a>
+        </p>
+
         <form onSubmit={this.handleSubmit}>
           <label htmlFor="pokemonName-input">Pokemon Name (ie Pikachu)</label>
           <input id="pokemonName-input" ref={this.inputRef} />
           <button type="submit">Submit</button>
         </form>
-        PokemonInfo
+
         <div data-testid="pokemon-display">
           {/* 💯 I, Hannah Hundred, give you permission to edit this for the extra credit */}
           {pokemonName ? <PokemonInfo pokemonName={pokemonName} /> : null}
         </div>
+
       </div>
     )
   }
