@@ -9,7 +9,7 @@ import React, {useState} from 'react'
 //
 // 🐨 Use your custom useCounter hook in the Counter.
 
-function useCounter ({step = 1, initialCount = 0}) {
+function useCounter ({step = 1, initialCount = 0} = {}) {
   const [count, setCount] = useState(initialCount);
   const increment = () => setCount(currentCount => currentCount + step);
   return [count, increment];
