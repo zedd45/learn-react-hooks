@@ -1,5 +1,5 @@
 // Tic Tac Toe: Advanced State
-import React, {useState} from 'react'
+import React, {Fragment, useState} from 'react'
 
 const X = 'X'
 const O = 'O'
@@ -19,20 +19,22 @@ const O = 'O'
 // xIsNext - Whether the "X" player is next. This will allow you to know who it
 // was that clicked on a square and allow you to display who the next player is.
 
-// TODO: exctact out the Square component, iterate over the rows & extract the hook logic
-
 function Board() {
   // 🐨 Use React.useState for both the elements of state you need
 
-  const [squares, placeMarker] = useState(Array(9).fill(null))
+  const [squares, setSquares] = useState(Array(9).fill(null))
   const [xIsNext, setXIsNext] = useState(true)
-  const winner = calculateWinner(squares);
+  const winner = calculateWinner(squares)
+
+  const reset = () => {
+    setSquares(Array(9).fill(null))
+    setXIsNext(true)
+  }
 
   // This is the function your square click handler will call. `square` should
   // be an index. So if they click the center square, this will be `5`.
 
   function selectSquare(square) {
-
     // 🐨 first determine if there's already a winner, return early if there is.
     // 💰 there's a `calculateWinner` function already written for you at the
     //    bottom of this file. Fee free to use `calculateWinner(squares)`.
@@ -45,16 +47,29 @@ function Board() {
     newSquares[square] = xIsNext ? X : O
 
     setXIsNext(!xIsNext)
-    placeMarker(newSquares)
+    setSquares(newSquares)
   }
 
-  let statusFragment;
-  if (winner) {
-    statusFragment = `Winner is ${winner}`
-  } else if (!winner && squares.every(square => !!square)) {
-    statusFragment = "Scratch: Cat's game"
-  } else {
-    statusFragment = `Next Player: ${xIsNext ? X : O}`
+  const ResetButton = ({children = ['play again?']}) => <button onClick={reset}>{children}</button>
+
+  const GameStatus = () => {
+    if (winner) {
+      return (
+        <Fragment>
+          <p>The winner is: <strong>{winner}</strong>.</p>
+          <ResetButton />
+        </Fragment>
+      )
+    } else if (!winner && squares.every(square => !!square)) {
+      return (
+        <Fragment>
+          <p>Scratch: Cat's game</p>
+          <ResetButton>Try again?</ResetButton>
+        </Fragment>
+      )
+    } else {
+      return `Next Player: ${xIsNext ? X : O}`
+    }
   }
 
   const Square = ({index}) => (
@@ -65,7 +80,9 @@ function Board() {
 
   return (
     <div>
-      <div className="status">{statusFragment}</div>
+      <div className="status">
+        <GameStatus />
+      </div>
 
       <div className="board-row">
         <Square index={0} />
